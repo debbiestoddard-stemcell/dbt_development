@@ -3,5 +3,6 @@ select
     orderid as order_id,
     paymentmethod as payment_method,
     status as payment_status,
+    --amount in cents
     amount/100 as amount
-from raw.stripe.payment
+from {{source('stripe','payment')}}

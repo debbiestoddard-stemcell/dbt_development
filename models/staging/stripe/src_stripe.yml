@@ -1,0 +1,19 @@
+version: 2
+
+sources:
+    - name: stripe
+      description: copy of a postgress app database
+      database: raw
+      tables:
+        - name: payment
+          description: raw payment data\
+          loaded_at_field: _batched_at
+          freshness:
+            warn_after: {count: 12, period: hour}
+            error_after: {count: 7, period: day}
+          columns:
+            - name: id
+              description: PK for payment
+              tests:
+                 - unique
+                 - not_null
