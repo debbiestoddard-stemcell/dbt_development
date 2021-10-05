@@ -1,7 +1,7 @@
 # Name your project! Project names should contain only lowercase characters
 # and underscores. A good package name should reflect your organization's
 # name or the intended use of these models
-name: 'jaffle_shop'
+name: 'bi_stemcell'
 version: '1.0.0'
 config-version: 2
 
@@ -31,13 +31,38 @@ clean-targets:         # directories to be removed by `dbt clean`
 # as tables. These settings can be overridden in the individual model files
 # using the `{{ config(...) }}` macro.
 models:
-  jaffle_shop:
-      # Applies to all files under models/example/
-    marts:
-        core:
-            materialized: table        
-    staging:
-            materialized: view
   snowflake_spend:
-    enabled: false
+    +enabled: false
+  bi_stemcell:
+      # Applies to all files under models/example/
+    10_staging:
+       +database: staging
+       materialized: view
  
+       stemcell__salesforce:
+        +schema: stemcell__salesforce
+
+       jaffle_shop:
+        +schema: jaffle_shop
+       stripe:
+        +schema: stripe
+       knoema:
+        +schema: knoema
+
+    20_integrate:
+       +database: integrate
+       materialized: view
+
+       customer:
+         +schema: customer
+
+    30_analyze:
+       +database: analyze
+       materialized: table 
+ 
+       customer:
+         +schema: customer
+       core:
+         +schema: core    
+ 
+

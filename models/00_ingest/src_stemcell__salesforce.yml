@@ -1,0 +1,11 @@
+version: 2
+sources:
+- name: "stemcell__salesforce"
+  database: "{{ target.name }}_ingest"
+  tables:
+  - name: "ACCOUNT"
+    columns:
+    - name: "ID"
+      tests:
+      - "unique"
+      - "not_null"
