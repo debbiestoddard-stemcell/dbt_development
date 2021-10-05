@@ -1,6 +1,30 @@
-select 
-      a.order_id
-    , a.customer_id
-    , b.amount
-from {{ref('stg_order')}} a
-join {{ref('stg_payment')}} b on a.order_id = b.order_id
+with orders as  (
+    select * from {{ ref('stg_order' )}}
+),
+
+payments as (
+    select * from {{ ref('stg_payment') }}
+),
+
+order_payments as (
+    select
+        order_id,
+        sum(case when payment_status = 'success' then amount end) as amount
+
+    from payments
+    group by 1
+),
+
+final as (
+
+    select
+        orders.order_id,
+        orders.customer_id,
+        orders.order_date,
+        coalesce(order_payments.amount, 0) as amount
+
+    from orders
+    left join order_payments using (order_id)
+)
+
+select * from final
