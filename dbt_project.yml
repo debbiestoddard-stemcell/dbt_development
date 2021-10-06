@@ -33,8 +33,15 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   snowflake_spend:
     +enabled: false
+
   bi_stemcell:
       # Applies to all files under models/example/
+    00_ingest:
+       +database: ingest
+
+       stemcell__salesforce:
+        +schema: stemcell__salesforce
+
     10_staging:
        +database: staging
        materialized: view
