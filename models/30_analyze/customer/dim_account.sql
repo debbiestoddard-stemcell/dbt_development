@@ -18,4 +18,4 @@ select
   account.account_sap_id as _account_sap_id,
   account.account_lab_id as _account_lab_id
 
-from {{ ref('account') }} as account
+from {{ ref('int_account') }} as account
